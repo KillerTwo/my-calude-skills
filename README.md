@@ -25,6 +25,7 @@ my-calude-skills/
 | Skill | Purpose |
 |------|---------|
 | `git-commit-conventional-commits` | 约束 Git 提交只包含当前任务改动，使用中文 Conventional Commits，并补充具体 `description` |
+| `i18n-dto-field-mapping` | 为 Java controller/service 查询结果补充国际化 key 字段，校验原始字典字段类型与 `Def.xxx` 一致，并按列表或单对象查询写入 `xxxText` |
 
 ## Quick Install
 
@@ -46,6 +47,7 @@ macOS / Linux 示例：
 ```bash
 mkdir -p ~/.claude/skills
 cp -R ./skills/git-commit-conventional-commits ~/.claude/skills/
+cp -R ./skills/i18n-dto-field-mapping ~/.claude/skills/
 ```
 
 更完整的安装说明见 [docs/install.md](/D:/documents/test1/my-calude-skills/docs/install.md)。
