@@ -159,6 +159,7 @@ Rules:
 - Use the DTO getter for the source field
 - Use the DTO setter for the `aText` field
 - When there are multiple mappings, set all related `xxxText` fields in the same result iteration
+- If the method already contains other field conversion logic, keep the existing conversion code and append only the newly requested field conversions
 
 #### Single-object query
 
@@ -174,6 +175,7 @@ Rules:
 - Guard against `null` when the surrounding method may return `null`
 - Keep the assignment close to the place where the DTO is assembled or returned
 - When there are multiple mappings, set every requested `xxxText` field before return
+- If the method already contains other field conversion logic, keep the existing conversion code and append only the newly requested field conversions
 
 ### 6. Final verification
 
@@ -187,6 +189,7 @@ Before finishing, verify:
 - Every `Codes.getI18nKey(Def.xxx.class, value)` uses the correct getter value
 - List queries use iteration
 - Single-object queries use direct assignment
+- Existing unrelated or previously implemented field conversion code was not deleted
 - Imports compile cleanly after the change
 
 ## Output Standard
@@ -212,11 +215,27 @@ Expected behavior:
 - Process `c -> Def.C`
 - Do not stop after completing only one field
 - Produce one coherent DTO and one coherent assignment block for the method
+- Preserve any existing conversion statements for other fields and only add the requested new ones
+
+## Incremental Update Rule
+
+This skill performs additive changes.
+
+If the target method already contains conversion code for other fields:
+- Do not delete existing conversion statements
+- Do not replace existing unrelated `xxxText` assignments
+- Do not shrink an existing conversion block just to fit the new fields
+- Append only the newly requested field conversions in the existing result-processing flow
+
+If the DTO already contains other i18n fields:
+- Keep the existing fields
+- Add only the missing requested `xxxText` fields
 
 ## Common Mistakes
 
 - Parsing only the method and ignoring some mapping pairs
 - Handling only `a` and forgetting `b` or `c`
+- Deleting existing conversion code while adding the new requested mappings
 - Adding `aText` but forgetting to populate it
 - Populating `aText` with the wrong `Def.xxx`
 - Modifying only the setter logic without checking the DTO field type
